@@ -13,7 +13,7 @@ A streamly simple Large Language Model User Interface(LLM-UI) with streamlit , i
    2. run the command
       
       ```
-      streamlit run llmui.py
+      streamlit run llmui/llmui.py
       ```
 
 ## how to use
