@@ -6,11 +6,15 @@ A streamly simple Large Language Model User Interface(LLM-UI) with streamlit , i
 1. locally
    1. install dependencies by
       
-      '''pip install -r requirement.txt'''
+      '''
+      pip install -r requirement.txt
+      '''
    1. copy the llmui.py in your work directory
    2. run the command
       
-      '''streamlit run llmui.py'''
+      '''
+      streamlit run llmui.py
+      '''
 
 ## how to use
 
