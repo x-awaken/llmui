@@ -3,8 +3,9 @@ A streamly simple Large Language Model User Interface(LLM-UI) with streamlit , i
 
 ## install
 
-1. copy the llmui.py in your work directory
-2. run the command "streamlit run llmui.py"
+1. locally
+  2. copy the llmui.py in your work directory
+  3. run the command "streamlit run llmui.py"
 
 ## how to use
 
