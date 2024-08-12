@@ -34,4 +34,4 @@ A streamly simple Large Language Model User Interface(LLM-UI) with streamlit , i
    2. delete current session
    ![avatar](images/delete%20session.png)
 
-feel free to submit issues
+## Feel free to submit issues
