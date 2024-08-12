@@ -237,12 +237,11 @@ else:
                     st.session_state['user_id'] = selected_user[0]
             else:
                 st.markdown('### ***'+st.session_state['user_name'] +'***')
-            st.session_state["messages"] = []
             
 
         new_session = st.button(" new session ")
         if new_session:
-            if  'session_id' not in st.session_state or st.session_state["messages"]:
+            if  st.session_state["messages"]:
                 if 'user_id' in st.session_state:
                     st.session_state['session_id'] = add_session(conn, user_id=st.session_state['user_id'], session_name='empty session')
                     add_session_detail(conn, st.session_state['session_id'] ,'[]')
@@ -258,7 +257,7 @@ else:
                 if 'access_count' not in st.session_state:
                     st.session_state['access_count'] = 0
                     newest_session = get_newest_session(conn, user_id=st.session_state['user_id'])
-                    if newest_session and newest_session[0][2] != 'empty session':
+                    if not newest_session or newest_session and newest_session[0][2] != 'empty session':
                         st.session_state['session_id'] = add_session(conn, user_id=st.session_state['user_id'], session_name='empty session')
                         add_session_detail(conn, st.session_state['session_id'] ,'[]')
                 chat_sessions = list_sessions(conn, st.session_state['user_id'])
@@ -282,9 +281,7 @@ else:
                         st.session_state["messages"] = []
                         if history_sesssion_detail and history_sesssion_detail[0][2]:
                             st.session_state["messages"] = json.loads(history_sesssion_detail[0][2])
-                else:
-                    if 'session_id' in st.session_state:
-                        del st.session_state['session_id']
+
         st.divider() 
 
         llm_host=None
@@ -441,17 +438,17 @@ else:
         llm_iter = llm.stream(st.session_state.messages)
         response = st.chat_message("assistant").write_stream(llm_iter)
         st.session_state.messages.append({"role": "assistant", "content": response})
-        if 'session_id' not in st.session_state:
-            if 'user_id' in st.session_state:
-                st.session_state['session_id'] = add_session(conn, user_id=st.session_state['user_id'], session_name=st.session_state.messages[0]['content'][:23])
-                add_session_detail(conn,st.session_state['session_id'],json.dumps(st.session_state.messages))
-                st.rerun()
-            else:
-                st.info('please select or register a user first')
-        else:
-            s_name = get_session_name(conn,st.session_state['session_id'])[0][2]
-            update_session_detail(conn, st.session_state['session_id'],json.dumps(st.session_state.messages))
-            update_session_name(conn,st.session_state['session_id'], st.session_state.messages[0]['content'][:23])
-            if s_name == 'new session' or  chat_session_options.index(selected_session)>0 or s_name == 'empty session':
-                st.rerun()
+        # if 'session_id' not in st.session_state:
+        #     if 'user_id' in st.session_state:
+        #         st.session_state['session_id'] = add_session(conn, user_id=st.session_state['user_id'], session_name=st.session_state.messages[0]['content'][:23])
+        #         add_session_detail(conn,st.session_state['session_id'],json.dumps(st.session_state.messages))
+        #         st.rerun()
+        #     else:
+        #         st.info('please select or register a user first')
+        # else:
+        s_name = get_session_name(conn,st.session_state['session_id'])[0][2]
+        update_session_detail(conn, st.session_state['session_id'],json.dumps(st.session_state.messages))
+        update_session_name(conn,st.session_state['session_id'], st.session_state.messages[0]['content'][:23])
+        if s_name == 'new session' or  chat_session_options.index(selected_session)>0 or s_name == 'empty session':
+            st.rerun()
     
